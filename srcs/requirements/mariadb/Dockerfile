@@ -1,15 +1,11 @@
-FROM mariadb:10.5
+FROM mariadb:10.11
 
-ARG MYSQL_ROOT_PASSWORD
-ARG WORDPRESS_DB_NAME
-ARG WORDPRESS_DB_USER
-ARG WORDPRESS_DB_PASSWORD
+COPY my.cnf /etc/mysql/my.cnf
+COPY setup.sh /docker-entrypoint-initdb.d/setup.sh
 
-ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-ENV WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-ENV WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-ENV WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+RUN chmod +x /docker-entrypoint-initdb.d/setup.sh
 
-COPY ./init.sql /docker-entrypoint-initdb.d/
+EXPOSE 3306
+
 
 

@@ -1,12 +1,56 @@
-  nginx:
-    build: ./requirements/nginx
-    depends_on:
-      - wordpress
-    volumes:
-      - wordpress_data:/var/www/html
-    ports:
-      - "443:443"
+services:
+  mariadb:
+    build: ./srcs/requirements/mariadb
+    container_name: mariadb
     env_file: .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
     networks:
       - inception
     restart: always
+
+  wordpress:
+    build: ./srcs/requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    env_file: .env
+    expose:
+      - "9000"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+    restart: always
+
+  nginx:
+    build: ./srcs/requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+    restart: always
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      device: /home/vnavarre/mariadb
+      o: 'bind'
+    
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      device: /home/vnavarre/wordpress
+      o: 'bind'
+
+networks:
+  inception:
+    driver: bridge
