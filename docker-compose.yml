@@ -41,14 +41,14 @@ volumes:
     driver: local
     driver_opts:
       type: 'none'
-      device: /home/vnavarre/mariadb
+      device: /home/vnavarre/data/mariadb
       o: 'bind'
     
   wordpress_data:
     driver: local
     driver_opts:
       type: 'none'
-      device: /home/vnavarre/wordpress
+      device: /home/vnavarre/data/wordpress
       o: 'bind'
 
 networks:

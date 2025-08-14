@@ -34,11 +34,16 @@ if [ ! -f /var/www/html/wp-config.php ]; then
   wp core install \
     --url=$DOMAIN_NAME \
     --title="Inception" \
-    --admin_user=admin \
-    --admin_password=admin42 \
-    --admin_email=admin@admin.com \
+    --admin_user=${WP_ADMIN_USER}\
+    --admin_password=${WP_ADMIN_PASS} \
+    --admin_email=${WP_ADMIN_MAIL} \
     --path=/var/www/html \
     --allow-root
+  wp user create ${WP_USER} ${WP_MAIL} \
+    --user_pass=${WP_PASS} \
+    --role=author \
+    --allow-root 
+  echo ${WP_USER}
 else
   echo "✅ WordPress est déjà installé."
 fi
